@@ -1,0 +1,44 @@
+-- =========================================
+-- SCENARIO 1: ProcessMonthlyInterest
+-- =========================================
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE ACCOUNTS';
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+
+CREATE TABLE ACCOUNTS (
+    ACCOUNT_ID NUMBER PRIMARY KEY,
+    CUSTOMER_NAME VARCHAR2(50),
+    ACCOUNT_TYPE VARCHAR2(20),
+    BALANCE NUMBER(10,2)
+);
+/
+
+INSERT INTO ACCOUNTS VALUES (101, 'Ravi', 'SAVINGS', 10000);
+INSERT INTO ACCOUNTS VALUES (102, 'Priya', 'CURRENT', 15000);
+INSERT INTO ACCOUNTS VALUES (103, 'Suresh', 'SAVINGS', 20000);
+INSERT INTO ACCOUNTS VALUES (104, 'Divya', 'SAVINGS', 5000);
+COMMIT;
+/
+
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest AS
+BEGIN
+    UPDATE ACCOUNTS
+    SET BALANCE = BALANCE + (BALANCE * 0.01)
+    WHERE ACCOUNT_TYPE = 'SAVINGS';
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Monthly interest applied successfully.');
+END;
+/
+
+BEGIN
+    ProcessMonthlyInterest;
+END;
+/
+
+SELECT * FROM ACCOUNTS;
+/
