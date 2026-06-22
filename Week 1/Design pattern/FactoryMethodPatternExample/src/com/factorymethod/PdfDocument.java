@@ -1,0 +1,9 @@
+package com.factorymethod;
+
+public class PdfDocument implements Document {
+
+    @Override
+    public void open() {
+        System.out.println("PDF document is opened.");
+    }
+}
